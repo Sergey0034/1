@@ -1,0 +1,238 @@
+{
+	"info": {
+		"_postman_id": "e543fb93-b7dd-4c61-a527-00ae5ebd6a4e",
+		"name": "Практикум 8 модуль",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ac997b95-270d-4ca1-80aa-5ad3bc540f0d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Session token exists\", function () {\r",
+							"    pm.expect(pm.cookies.has(\"Session\")).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "{{login}}",
+							"type": "text"
+						},
+						{
+							"key": "pass",
+							"value": "{{passw}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/pets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c1574497-4fc1-4c01-a38d-a31903ee553b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.variables.set(\"pet_ID\", jsonData.pets[0].id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/pets",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"pets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/pets edit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9279b49e-7b41-4fd9-95e3-0fb2ae81d4a5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response has the name of the edited pet\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"name\",(\"{{pet_name}}\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "87b76a55-f907-4b00-b380-2aaaf57d2e1e",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{pet_name}}\",\r\n  \"animal_type\": \"{{pet_type}}\",\r\n  \"age\": \"{{pet_age}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/pets/{{pet_ID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"pets",
+						"{{pet_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1ebce5b4-c670-484c-8de3-22c967e8e7ba",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/logout",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "30f4bc38-3073-4c9f-aefc-88cf43c67500",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "55c26079-3de2-4bd1-95c7-cfddeee1d861",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "0e4d098b-9076-4a2e-ab75-924cf903598d",
+			"key": "url",
+			"value": "http://petfriends1.herokuapp.com"
+		},
+		{
+			"id": "20144eac-6bbe-416f-8e27-bdb5eb819d57",
+			"key": "pet_name",
+			"value": ""
+		},
+		{
+			"id": "4b06f93a-27dd-485b-90b5-9946c95adf33",
+			"key": "pet_age",
+			"value": ""
+		},
+		{
+			"id": "3bdad8d1-4233-4579-9376-5a4675c796c9",
+			"key": "pet_type",
+			"value": ""
+		},
+		{
+			"id": "a71d8eb9-9e87-4130-8e02-f34c1e67c84c",
+			"key": "pet_ID",
+			"value": "bfdbe85c-c329-46c8-8169-86040fdeed2e"
+		},
+		{
+			"id": "cf73b978-8fc3-4ee1-93af-0bf9e91df32b",
+			"key": "login",
+			"value": "slubencov@mail.ru"
+		},
+		{
+			"id": "8b08f649-2e6b-4a5d-91b9-a2053a7f9766",
+			"key": "passw",
+			"value": "serg0841226"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
